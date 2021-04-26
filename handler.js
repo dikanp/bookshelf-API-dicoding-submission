@@ -49,7 +49,7 @@ const addBookHandler = (request, h) => {
       status: "success",
       message: "Buku berhasil ditambahkan",
       data: {
-        booksId: id,
+        bookId: id,
       },
     });
     response.code(201);
@@ -63,12 +63,30 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-const getAllBooksHandler = (request, h) => ({
-  status: "success",
-  data: {
-    books,
-  },
-})
+const getAllBooksHandler = (request, h) => {
+  // allBooks = books.map(book => {
+  //   allBooks.id = book.id
+  //   allBooks.name = book.name
+  //   allBooks.publisher = book.publisher
+  // }) 
+  console.log(books)
+  const response = h.response({
+    status: "success",
+    data: {
+      books: books.map(book => ({
+        id: book.id,
+        name: book.name,
+        publisher: book.publisher
+      }))
+    }
+  });
+  response.code(200);
+  return response;
+  // status: "success",
+  // data: {
+  //   books: allBooks,
+  // },
+}
 
 const getBookHandler = (request, h) => {
   const { id } = request.params;
