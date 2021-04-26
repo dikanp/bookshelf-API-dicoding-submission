@@ -3,10 +3,18 @@ const books = require("./books");
 
 const addBookHandler = (request, h) => {
   const { name, year, author, summary, publisher, pageCount, readPage, reading} = request.payload;
-  if ((name == null) || (readPage > pageCount)) {
+  if ((name == null || name == '')) {
     const response = h.response({
       status: "fail",
       message: "Gagal menambahkan buku. Mohon isi nama buku",
+    });
+    response.code(400);
+    return response;
+  }
+  if (readPage > pageCount) {
+    const response = h.response({
+      status: "fail",
+      message: "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount"",
     });
     response.code(400);
     return response;
@@ -82,6 +90,58 @@ const getBookHandler = (request, h) => {
   response.code(404);
   return response;
 }
+
+const editNoteByIdHandler = (request, h) => {
+  const { id } = request.params;
+
+  const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
+  if 
+  const updatedAt = new Date().toISOString();
+  const index = books.findIndex((book) => book.id === id);
+  if (index !== -1) {
+    notes[index] = {
+      ...notes[index],
+      title,
+      tags,
+      body,
+      updatedAt,
+    };
+    const response = h.response({
+      status: "success",
+      message: "Catatan berhasil diperbarui",
+    });
+    response.code(200);
+    return response;
+  }
+  const response = h.response({
+    status: "fail",
+    message: "Gagal memperbarui catatan. Id tidak ditemukan",
+  });
+  response.code(404);
+  return response;
+};
+
+const deleteBookByIdHandler = (request, h) => {
+  const { id } = request.params;
+
+  const index = books.findIndex((book) => book.id === id);
+
+  if (index !== -1) {
+    notes.splice(index, 1);
+    const response = h.response({
+      status: "success",
+      message: "Catatan berhasil dihapus",
+    });
+    response.code(200);
+    return response;
+  }
+  const response = h.response({
+    status: "fail",
+    message: "Catatan gagal dihapus. Id tidak ditemukan",
+  });
+  response.code(404);
+  return response;
+};
 
 module.exports = {
   addBookHandler, 
