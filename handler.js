@@ -3,7 +3,7 @@ const books = require("./books");
 
 const addBookHandler = (request, h) => {
   const { name, year, author, summary, publisher, pageCount, readPage, reading} = request.payload;
-  if ((name == null) || (readpage > pageCount)) {
+  if ((name == null) || (readPage > pageCount)) {
     const response = h.response({
       status: "fail",
       message: "Gagal menambahkan buku. Mohon isi nama buku",
@@ -41,7 +41,7 @@ const addBookHandler = (request, h) => {
       status: "success",
       message: "Buku berhasil ditambahkan",
       data: {
-        noteId: id,
+        booksId: id,
       },
     });
     response.code(201);
@@ -55,6 +55,36 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
+const getAllBooksHandler = (request, h) => ({
+  status: "success",
+  data: {
+    books,
+  },
+})
+
+const getBookHandler = (request, h) => {
+  const { id } = request.params;
+
+  const book = books.filter((n) => n.id === id)[0];
+
+  if (book !== undefined) {
+    return {
+      status: "success",
+      data: {
+        book,
+      },
+    };
+  }
+  const response = h.response({
+    status: "fail",
+    message: "Buku tidak ditemukan",
+  });
+  response.code(404);
+  return response;
+}
+
 module.exports = {
-  addBookHandler,
+  addBookHandler, 
+  getAllBooksHandler,
+  getBookHandler
 };
