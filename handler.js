@@ -14,7 +14,7 @@ const addBookHandler = (request, h) => {
   if (readPage > pageCount) {
     const response = h.response({
       status: "fail",
-      message: "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount"",
+      message: "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
     });
     response.code(400);
     return response;
@@ -91,19 +91,24 @@ const getBookHandler = (request, h) => {
   return response;
 }
 
-const editNoteByIdHandler = (request, h) => {
+const editBookByIdHandler = (request, h) => {
   const { id } = request.params;
 
   const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
-  if 
+   
   const updatedAt = new Date().toISOString();
   const index = books.findIndex((book) => book.id === id);
   if (index !== -1) {
-    notes[index] = {
-      ...notes[index],
-      title,
-      tags,
-      body,
+    books[index] = {
+      ...books[index],
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
       updatedAt,
     };
     const response = h.response({
